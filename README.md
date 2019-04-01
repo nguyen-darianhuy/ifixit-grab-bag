@@ -1,2 +1,2 @@
 # ifixit-grab-bag
-Tool to allow users to add devices they own to their iFixit account, using the iFixit API.
+A tool that uses the iFixit API to allow users to assemble and add a collection of devices they own to their account.
