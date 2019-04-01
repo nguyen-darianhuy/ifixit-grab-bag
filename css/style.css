@@ -1,0 +1,55 @@
+/*ifixit blue: #0373cf*/
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: transparent;
+    color: #555;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 1.6em;
+    margin: 0;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.clr {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+#main-header {
+    background-color: #202020;
+    color: white;
+}
+
+#selector {
+    float: left;
+    width: 70%;
+}
+
+#grab-bag {
+    float: right;
+    width: 30%;
+}
+
+#logo {
+    display: inline-block;
+    height: 80px;
+    vertical-align: middle;
+}
+
+#main-footer {
+    background: #202020;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    bottom: 0;
+}

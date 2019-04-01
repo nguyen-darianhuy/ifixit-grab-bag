@@ -2,18 +2,19 @@
 <html>
 <head>
     <title>iFixit Grab Bag</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <header id="main-header">
         <div class="container">
-            <h1>iFixit Grab Bag</h1>
+            <h1><img id="logo" src="images/logo.png" alt="iFixit logo">iFixit Grab Bag</h1>
         </div>
     </header>
 
     <section id="selector">
         <div class="container">
             <h2>Add a Device</h2>
+            <hr>
             <div class="input">
                 <input type="text" id="search-query" placeholder="Search">
             </div>
@@ -28,17 +29,18 @@
     <section id="grab-bag">
         <div class="container">
             <h2>My Workbench</h2>
+            <hr>
             <ul id="bag-items">
                 
             </ul>
+            <input type="button" id="clear-button" value="Clear">
         </div>
     </section>
 
-    <footer>
-        <div class="container">
-            <p>By Darian Nguyen</p>
-        </div>
+    <div class="clr"></div>
 
+    <footer id="main-footer">
+        <p>By Darian Nguyen</p>
     </footer>
 </body>
 
