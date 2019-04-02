@@ -16,7 +16,7 @@ function loadSearchResults(resultContainer, searchQuery) {
         if (request.status >= 200 && request.status < 400) {
             clearContainer(resultContainer);
 
-            //reformat
+            //reformat to be better
             let json = JSON.parse(this.response);
             data = {};
             for (let obj of json["results"]) {
@@ -61,11 +61,17 @@ function addOptions(resultContainer, data) {
         const option = document.createElement("li");
         option.className =  "option";
         option.textContent = entry;
+        if (Object.entries(data[entry]).length !== 0) { //is a category
+            const img = document.createElement("img");
+            img.id = "arrow";
+            img.src = "images/arrow.png";
+            option.appendChild(img);
+        }
         option.addEventListener("click", function() {
             while (resultContainer.lastChild !== this.parentElement) {
                 resultContainer.removeChild(resultContainer.lastChild);
             }
-            
+
             //selected status handling
             this.className = "option selected";
             for (let opt of this.parentElement.children) {
@@ -73,12 +79,13 @@ function addOptions(resultContainer, data) {
                     opt.className = "option";
                 }
             }
-
+            console.log(option.textContent);
             if (Object.entries(data[this.textContent]).length === 0) { //is a device
                 //TODO add device to bag
             } else {
                 addOptions(resultContainer, data[this.textContent]);
             }
+            console.log(option.textContent);
         });
         optionList.appendChild(option);
     }

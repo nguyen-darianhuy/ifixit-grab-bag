@@ -34,7 +34,11 @@ body {
     background-color: #f0f0f0;
     border: solid 1px lightgray;
     margin: 0px 0px -1px 0px;
-    padding: 5px;
+    padding: 5px 0px 5px 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .option.selected {
@@ -51,6 +55,11 @@ body {
     display: inline-block;
     height: 80px;
     vertical-align: middle;
+}
+
+#arrow {
+    
+    width: 20px;
 }
 
 #selector {
