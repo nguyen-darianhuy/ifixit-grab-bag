@@ -28,7 +28,6 @@ body {
     padding: 0;
     list-style-type: none;
     max-width: 20%;
-    min-height: 380px; /* TODO fix footer position */
 }
 
 .option {
@@ -51,6 +50,7 @@ body {
 #selector {
     float: left;
     width: 80%;
+    min-height: 500px; /* TODO fix footer position */
 }
 
 #search-bar {
