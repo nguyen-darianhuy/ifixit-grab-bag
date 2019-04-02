@@ -15,14 +15,14 @@
         <div class="container">
             <h2>Add a Device</h2>
             <hr>
-            <div class="input">
-                <input type="text" id="search-query" placeholder="Search">
-            </div>
-            <div class="device-list">
-                <ul id="devices">
-                    <!--Polled from API-->
-                </ul>
-            </div>
+            <p>
+                <input type="text" id="search-bar" placeholder="Search"><p></p>
+            </p>
+            <ul class="option-list" id="option-list1"><!--Polled from API--></ul>
+            <ul class="option-list" id="option-list2"><!--Polled from API--></ul>
+            <ul class="option-list" id="option-list3"><!--Polled from API--></ul>
+            <ul class="option-list" id="option-list4"><!--Polled from API--></ul>
+            <div class="clr"></div>
         </div>
     </section>
 
@@ -30,10 +30,11 @@
         <div class="container">
             <h2>My Workbench</h2>
             <hr>
-            <ul id="bag-items">
+            <ul id="bag-items"><!--User defined--></ul>
+            <p>
+                <input type="button" id="clear-button" value="Clear">
+            </p>
                 
-            </ul>
-            <input type="button" id="clear-button" value="Clear">
         </div>
     </section>
 

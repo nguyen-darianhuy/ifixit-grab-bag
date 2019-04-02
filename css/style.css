@@ -1,4 +1,3 @@
-/*ifixit blue: #0373cf*/
 * {
     box-sizing: border-box;
 }
@@ -24,19 +23,23 @@ body {
     clear: both;
 }
 
+.option-list {
+    float: left;
+    padding: 0;
+    list-style-type: none;
+    max-width: 20%;
+    min-height: 380px; /* TODO fix footer position */
+}
+
+.option {
+    background-color: #e0e0e0;
+    border: solid 2px lightgray;
+    padding: 5px;
+}
+
 #main-header {
     background-color: #202020;
     color: white;
-}
-
-#selector {
-    float: left;
-    width: 70%;
-}
-
-#grab-bag {
-    float: right;
-    width: 30%;
 }
 
 #logo {
@@ -45,11 +48,31 @@ body {
     vertical-align: middle;
 }
 
+#selector {
+    float: left;
+    width: 80%;
+}
+
+#search-bar {
+    font-size: 18px;
+}
+
+#grab-bag {
+    float: right;
+    width: 20%;
+}
+
+#clear-button {
+    background-color: #0373cf;
+    color: white;
+    width: 100%;
+    font-size: 18px;
+}
+
 #main-footer {
     background: #202020;
     color: white;
     text-align: center;
     padding: 20px;
-    margin-top: 40px;
     bottom: 0;
 }
