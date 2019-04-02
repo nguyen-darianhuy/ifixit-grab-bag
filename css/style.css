@@ -27,13 +27,19 @@ body {
     float: left;
     padding: 0;
     list-style-type: none;
-    max-width: 20%;
+    width: 20%;
 }
 
 .option {
-    background-color: #e0e0e0;
-    border: solid 2px lightgray;
+    background-color: #f0f0f0;
+    border: solid 1px lightgray;
+    margin: 0px 0px -1px 0px;
     padding: 5px;
+}
+
+.option.selected {
+    background-color: #0373cf;
+    color: white;
 }
 
 #main-header {
@@ -51,6 +57,10 @@ body {
     float: left;
     width: 80%;
     min-height: 500px; /* TODO fix footer position */
+}
+
+#result-container {
+    width: 100%;
 }
 
 #search-bar {
