@@ -40,15 +40,16 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-}
-
-.selected {
-    background-color: #0373cf !important;
-    color: white;
+    cursor: pointer;
 }
 
 .option:hover {
     background-color: #c4e4ff;
+}
+
+.option.selected {
+    background-color: #0373cf;
+    color: white;
 }
 
 .device-list {
@@ -63,10 +64,11 @@ body {
     margin: 0px 0px -4px 0px;
     padding: 5px;
     text-align: center;
+    cursor: pointer;
 }
 
 .device:hover {
-    background-color: #ffb5b5 !important;
+    background-color: #ffb5b5;
 }
 
 .error-message {
@@ -91,7 +93,7 @@ body {
 #selector {
     float: left;
     width: 80%;
-    min-height: 500px; /* TODO fix footer position */
+    min-height: 100vh;
 }
 
 #result-container {
@@ -115,6 +117,7 @@ body {
     font-size: 18px;
     padding: 5px;
     border: solid 1px lightgray;
+    cursor: pointer;
 }
 
 #clear-button:hover {
