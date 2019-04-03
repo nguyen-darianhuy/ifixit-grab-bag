@@ -85,7 +85,6 @@ body {
 }
 
 #arrow {
-    
     width: 20px;
 }
 
@@ -133,4 +132,20 @@ body {
 
 #main-footer a {
     color: #c4e4ff
+}
+
+@media (max-width: 600px) {
+    .option-list {
+        font-size: 13px;
+        width: 20%;
+    }
+    #selector {
+        width: 100%;
+        float: none;
+    }
+
+    #grab-bag {
+        width: 100%;
+        float: none;
+    }
 }
