@@ -61,7 +61,7 @@ function displayErrorMessage(message) {
     const m = document.createElement("p"); 
     m.className = "error-message";
     m.textContent = message;
-    resultContainer.appendChild(displayErrorMessage);
+    resultContainer.appendChild(m);
 }
 
 function loadOptions(resultContainer) {
