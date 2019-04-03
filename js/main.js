@@ -1,5 +1,9 @@
+const deviceList = [];
+//TODO Issue #4 load stored devices into deviceList & update
+
 const request = new XMLHttpRequest();
 const resultContainer = document.querySelector("#result-container");
+const bagList = document.querySelector("#bag-list");
 
 const searchBar = document.querySelector("#search-bar");
 searchBar.addEventListener("input", function() {
@@ -16,8 +20,8 @@ function loadSearchResults(resultContainer, searchQuery) {
         if (request.status >= 200 && request.status < 400) {
             clearContainer(resultContainer);
 
-            //reformat to be better
             let json = JSON.parse(this.response);
+            //formats json similar to /categories/'s response
             data = {};
             for (let obj of json["results"]) {
                 data[obj.title] = {};
@@ -72,23 +76,37 @@ function addOptions(resultContainer, data) {
                 resultContainer.removeChild(resultContainer.lastChild);
             }
 
-            //selected status handling
+            //"selected" status handling
             this.className = "option selected";
             for (let opt of this.parentElement.children) {
                 if (opt !== this) {
                     opt.className = "option";
                 }
             }
-            console.log(option.textContent);
             if (Object.entries(data[this.textContent]).length === 0) { //is a device
-                //TODO add device to bag
+                addDevice(bagList, this.textContent);
             } else {
                 addOptions(resultContainer, data[this.textContent]);
             }
-            console.log(option.textContent);
         });
         optionList.appendChild(option);
     }
+}
+
+function addDevice(bagList, device) {
+    const found = deviceList.some(d => d === device);
+    if (found) {
+        return;
+    }
+
+    const deviceObj = document.createElement("li");
+    deviceObj.className = "device";
+    deviceObj.textContent = device;
+
+    bagList.appendChild(deviceObj);
+
+    deviceList.push(device);
+    //TODO save local storage Issue #4
 }
 
 loadOptions(resultContainer);
