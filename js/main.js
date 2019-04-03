@@ -24,7 +24,7 @@ searchBar.addEventListener("input", function() {
 
 function loadSearchResults(resultContainer, searchQuery) {
     request.open("GET", `https://www.ifixit.com/api/2.0/suggest/${searchQuery}?doctypes=device`, true);
-    request.onload = function () {
+    request.onload = function() {
         if (request.status >= 200 && request.status < 400) {
             clearContainer(resultContainer);
 
@@ -38,13 +38,14 @@ function loadSearchResults(resultContainer, searchQuery) {
             if (json["results"].length !== 0) {
                 addOptions(resultContainer, data);
             } else {
-                const noResultsMessage = document.createElement("p");
-                noResultsMessage.textContent = "No matches found. Did you spell it correctly?";
-                resultContainer.appendChild(noResultsMessage);
+                displayErrorMessage("No matches found. Did you spell it correctly?");
             }
         } else {
             console.log("error loading categories"); //TODO Issue #6
         }
+    }
+    request.onerror = function() {
+        displayErrorMessage("Internet connection lost, please check your connection.");
     }
     request.send();
 }
@@ -55,9 +56,17 @@ function clearContainer(container) {
     }
 }
 
+function displayErrorMessage(message) {
+    clearContainer(resultContainer);
+    const m = document.createElement("p"); 
+    m.className = "error-message";
+    m.textContent = message;
+    resultContainer.appendChild(displayErrorMessage);
+}
+
 function loadOptions(resultContainer) {
     request.open("GET", "https://www.ifixit.com/api/2.0/categories", true);
-    request.onload = function () {
+    request.onload = function() {
         if (request.status >= 200 && request.status < 400) {
             clearContainer(resultContainer); 
 
@@ -67,6 +76,9 @@ function loadOptions(resultContainer) {
             console.log("error loading data"); //TODO Issue #6
         }
     };
+    request.onerror = function() {
+        displayErrorMessage("Internet connection lost, please check your connection.");
+    }
     request.send();
 }
 

@@ -69,6 +69,10 @@ body {
     background-color: #ffb5b5 !important;
 }
 
+.error-message {
+    color: #ff3232;
+}
+
 #main-header {
     background-color: #202020;
     color: white;
@@ -122,6 +126,11 @@ body {
     background: #202020;
     color: white;
     text-align: center;
+    margin: 16px 0px 0px 0px;
     padding: 20px;
     bottom: 0;
+}
+
+#main-footer a {
+    color: #c4e4ff
 }
