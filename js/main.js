@@ -1,54 +1,41 @@
-const request = new XMLHttpRequest();
 const resultContainer = document.querySelector("#result-container");
 const bagList = document.querySelector("#bag-list");
 
 let deviceList = [];
 loadDeviceList();
-loadOptions(resultContainer);
+
+loadOptions();
 
 const clearButton = document.querySelector("#clear-button");
 clearButton.addEventListener("click", function() {
     deviceList = [];
     clearContainer(bagList);
     saveDeviceList();
-})
+});
+
+function saveDeviceList() {
+    localStorage.setItem("deviceList", JSON.stringify(deviceList));
+}
+
+function loadDeviceList() {
+    let storedList = JSON.parse(localStorage.getItem("deviceList"));
+    if (!storedList) {
+        storedList = [];
+    }
+
+    for (let d of storedList) {
+        addDeviceToBag(d);
+    }
+}
 
 const searchBar = document.querySelector("#search-bar");
 searchBar.addEventListener("input", function() {
     if (this.value !== "") {
-        loadSearchResults(resultContainer, this.value);
+        loadSearchResults(this.value);
     } else {
-        loadOptions(resultContainer);
+        loadOptions();
     }
 });
-
-function loadSearchResults(resultContainer, searchQuery) {
-    request.open("GET", `https://www.ifixit.com/api/2.0/suggest/${searchQuery}?doctypes=device`, true);
-    request.onload = function() {
-        if (request.status >= 200 && request.status < 400) {
-            clearContainer(resultContainer);
-
-            let json = JSON.parse(this.response);
-            //formats json similar to /categories/'s response
-            data = {};
-            for (let obj of json["results"]) {
-                data[obj.title] = {};
-            }
-            
-            if (json["results"].length !== 0) {
-                addOptions(resultContainer, data);
-            } else {
-                displayErrorMessage("No matches found. Did you spell it correctly?");
-            }
-        } else {
-            console.log("error loading categories"); //TODO Issue #6
-        }
-    }
-    request.onerror = function() {
-        displayErrorMessage("Internet connection lost, please check your connection.");
-    }
-    request.send();
-}
 
 function clearContainer(container) {
     while (container.firstChild) {
@@ -56,42 +43,77 @@ function clearContainer(container) {
     }
 }
 
-function displayErrorMessage(message) {
-    clearContainer(resultContainer);
-    const m = document.createElement("p"); 
-    m.className = "error-message";
-    m.textContent = message;
-    resultContainer.appendChild(m);
+function loadSearchResults(searchQuery) {
+    const request = new XMLHttpRequest();
+    request.open("GET", `https://www.ifixit.com/api/2.0/suggest/${searchQuery}?doctypes=device`, true);
+    request.onload = function() {
+        if (request.status >= 200 && request.status < 400) {
+            clearContainer(resultContainer);
+
+            const json = JSON.parse(this.response);
+            //formats json similar to /categories/'s response
+            const options = {};
+            for (let option of json["results"]) {
+                options[option.title] = {};
+            }
+            
+            if (json["results"].length !== 0) {
+                addOptions(options);
+            } else {
+                displayErrorMessage(resultContainer, "no-search-results");
+            }
+        } else {
+            displayErrorMessage(resultContainer, "api");
+        }
+    }
+    request.onerror = function() {
+        displayErrorMessage(resultContainer, "no-internet");
+    }
+    request.send();
 }
 
-function loadOptions(resultContainer) {
+function displayErrorMessage(container, errorType) {
+    messages = {
+        "api": "iFixit API not responding. Please try again later.",
+        "no-internet": "Unable to connect to Internet, please check your connection.",
+        "no-search-results": "No matches found. Did you spell it correctly?"
+    }
+    clearContainer(container);
+    const m = document.createElement("p"); 
+    m.className = "error-message";
+    m.textContent = messages[errorType];
+    container.appendChild(m);
+}
+
+function loadOptions() {
+    const request = new XMLHttpRequest();
     request.open("GET", "https://www.ifixit.com/api/2.0/categories", true);
     request.onload = function() {
         if (request.status >= 200 && request.status < 400) {
             clearContainer(resultContainer); 
 
-            const data = JSON.parse(this.response);
-            addOptions(resultContainer, data);
+            const options = JSON.parse(this.response);
+            addOptions(options);
         } else {
-            console.log("error loading data"); //TODO Issue #6
+            displayErrorMessage(resultContainer, "api");
         }
     };
     request.onerror = function() {
-        displayErrorMessage("Internet connection lost, please check your connection.");
+        displayErrorMessage(resultContainer, "no-internet");
     }
     request.send();
 }
 
-function addOptions(resultContainer, data) {
+function addOptions(options) {
     const optionList = document.createElement("ul");
     optionList.className = "option-list";
     resultContainer.appendChild(optionList);
 
-    for (let entry in data) {
+    for (let entry in options) {
         const option = document.createElement("li");
         option.className =  "option";
         option.textContent = entry;
-        if (Object.entries(data[entry]).length !== 0) { //is a category
+        if (Object.entries(options[entry]).length !== 0) { //is a category
             const img = document.createElement("img");
             img.id = "arrow";
             img.src = "images/arrow.png";
@@ -110,10 +132,10 @@ function addOptions(resultContainer, data) {
                 }
             }
 
-            if (Object.entries(data[this.textContent]).length === 0) { //is a device
-                addDevice(bagList, this.textContent);
+            if (Object.entries(options[this.textContent]).length === 0) { //is a device
+                addDeviceToBag(this.textContent);
             } else {
-                addOptions(resultContainer, data[this.textContent]);
+                addOptions(options[this.textContent]);
             }
 
         });
@@ -121,7 +143,7 @@ function addOptions(resultContainer, data) {
     }
 }
 
-function addDevice(bagList, device) {
+function addDeviceToBag(device) {
     const found = deviceList.some(d => d === device);
     if (found) {
         //throw error?
@@ -131,7 +153,7 @@ function addDevice(bagList, device) {
     deviceObj.className = "device";
     deviceObj.textContent = device;
     deviceObj.addEventListener("click", function() {
-        removeDevice(bagList, device);
+        removeDeviceFromBag(device);
     });
 
     bagList.appendChild(deviceObj);
@@ -140,7 +162,7 @@ function addDevice(bagList, device) {
     saveDeviceList();
 }
 
-function removeDevice(bagList, device) {
+function removeDeviceFromBag(device) {
     const found = deviceList.some(d => d === device);
     if (!found) {
         //throw error
@@ -155,20 +177,5 @@ function removeDevice(bagList, device) {
         }
     }
     saveDeviceList();
-}
-
-function saveDeviceList() {
-    localStorage.setItem("deviceList", JSON.stringify(deviceList));
-}
-
-function loadDeviceList() {
-    storedList = JSON.parse(localStorage.getItem("deviceList"));
-    if (!storedList) {
-        storedList = [];
-    }
-
-    for (let d of storedList) {
-        addDevice(bagList, d);
-    }
 }
 
