@@ -4,6 +4,7 @@ const bagList = document.querySelector("#bag-list");
 
 let deviceList = [];
 loadDeviceList();
+loadOptions(resultContainer);
 
 const clearButton = document.querySelector("#clear-button");
 clearButton.addEventListener("click", function() {
@@ -34,7 +35,13 @@ function loadSearchResults(resultContainer, searchQuery) {
                 data[obj.title] = {};
             }
             
-            addOptions(resultContainer, data);
+            if (json["results"].length !== 0) {
+                addOptions(resultContainer, data);
+            } else {
+                const noResultsMessage = document.createElement("p");
+                noResultsMessage.textContent = "No matches found. Did you spell it correctly?";
+                resultContainer.appendChild(noResultsMessage);
+            }
         } else {
             console.log("error loading categories"); //TODO Issue #6
         }
@@ -153,4 +160,3 @@ function loadDeviceList() {
     }
 }
 
-loadOptions(resultContainer);
