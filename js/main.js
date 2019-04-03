@@ -1,14 +1,15 @@
-let deviceList = [];
-//TODO Issue #4 load stored devices into deviceList & update
-
 const request = new XMLHttpRequest();
 const resultContainer = document.querySelector("#result-container");
 const bagList = document.querySelector("#bag-list");
+
+let deviceList = [];
+loadDeviceList();
 
 const clearButton = document.querySelector("#clear-button");
 clearButton.addEventListener("click", function() {
     deviceList = [];
     clearContainer(bagList);
+    saveDeviceList();
 })
 
 const searchBar = document.querySelector("#search-bar");
@@ -107,7 +108,6 @@ function addDevice(bagList, device) {
         //throw error?
         return;
     }
-    console.log("AY");
     const deviceObj = document.createElement("li");
     deviceObj.className = "device";
     deviceObj.textContent = device;
@@ -118,7 +118,7 @@ function addDevice(bagList, device) {
     bagList.appendChild(deviceObj);
 
     deviceList.push(device);
-    //TODO save local storage Issue #4
+    saveDeviceList();
 }
 
 function removeDevice(bagList, device) {
@@ -135,7 +135,22 @@ function removeDevice(bagList, device) {
             break;
         }
     }
-    //TODO save ls #4
+    saveDeviceList();
+}
+
+function saveDeviceList() {
+    localStorage.setItem("deviceList", JSON.stringify(deviceList));
+}
+
+function loadDeviceList() {
+    storedList = JSON.parse(localStorage.getItem("deviceList"));
+    if (!storedList) {
+        storedList = [];
+    }
+
+    for (let d of storedList) {
+        addDevice(bagList, d);
+    }
 }
 
 loadOptions(resultContainer);
