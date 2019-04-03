@@ -1,9 +1,15 @@
-const deviceList = [];
+let deviceList = [];
 //TODO Issue #4 load stored devices into deviceList & update
 
 const request = new XMLHttpRequest();
 const resultContainer = document.querySelector("#result-container");
 const bagList = document.querySelector("#bag-list");
+
+const clearButton = document.querySelector("#clear-button");
+clearButton.addEventListener("click", function() {
+    deviceList = [];
+    clearContainer(bagList);
+})
 
 const searchBar = document.querySelector("#search-bar");
 searchBar.addEventListener("input", function() {
@@ -75,7 +81,7 @@ function addOptions(resultContainer, data) {
             while (resultContainer.lastChild !== this.parentElement) {
                 resultContainer.removeChild(resultContainer.lastChild);
             }
-
+            
             //"selected" status handling
             this.className = "option selected";
             for (let opt of this.parentElement.children) {
@@ -83,11 +89,13 @@ function addOptions(resultContainer, data) {
                     opt.className = "option";
                 }
             }
+
             if (Object.entries(data[this.textContent]).length === 0) { //is a device
                 addDevice(bagList, this.textContent);
             } else {
                 addOptions(resultContainer, data[this.textContent]);
             }
+
         });
         optionList.appendChild(option);
     }
@@ -96,17 +104,38 @@ function addOptions(resultContainer, data) {
 function addDevice(bagList, device) {
     const found = deviceList.some(d => d === device);
     if (found) {
+        //throw error?
         return;
     }
-
+    console.log("AY");
     const deviceObj = document.createElement("li");
     deviceObj.className = "device";
     deviceObj.textContent = device;
+    deviceObj.addEventListener("click", function() {
+        removeDevice(bagList, device);
+    });
 
     bagList.appendChild(deviceObj);
 
     deviceList.push(device);
     //TODO save local storage Issue #4
+}
+
+function removeDevice(bagList, device) {
+    const found = deviceList.some(d => d === device);
+    if (!found) {
+        //throw error
+        return;
+    }
+
+    for (let d of bagList.children) {
+        if (d.textContent === device) {
+            d.remove();
+            deviceList = deviceList.filter(d => d !== device);
+            break;
+        }
+    }
+    //TODO save ls #4
 }
 
 loadOptions(resultContainer);
