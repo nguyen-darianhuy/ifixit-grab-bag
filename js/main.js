@@ -13,10 +13,16 @@ clearButton.addEventListener("click", function() {
     saveDeviceList();
 });
 
+/**
+ * Save the items in bag to browser local storage
+ */
 function saveDeviceList() {
     localStorage.setItem("deviceList", JSON.stringify(deviceList));
 }
 
+/**
+ * Load items to bag from browser local storage
+ */
 function loadDeviceList() {
     let storedList = JSON.parse(localStorage.getItem("deviceList"));
     if (!storedList) {
@@ -37,12 +43,20 @@ searchBar.addEventListener("input", function() {
     }
 });
 
+/**
+ * Clear a container of children
+ * @param {Node} container 
+ */
 function clearContainer(container) {
     while (container.firstChild) {
         container.removeChild(container.firstChild);
     }
 }
 
+/**
+ * Display search results from API
+ * @param {string} searchQuery 
+ */
 function loadSearchResults(searchQuery) {
     const request = new XMLHttpRequest();
     request.open("GET", `https://www.ifixit.com/api/2.0/suggest/${searchQuery}?doctypes=device`, true);
@@ -72,6 +86,11 @@ function loadSearchResults(searchQuery) {
     request.send();
 }
 
+/**
+ * Display a red error message 
+ * @param {Node} container Container in which to display the message
+ * @param {string} errorType Type of error
+ */
 function displayErrorMessage(container, errorType) {
     messages = {
         "api": "iFixit API not responding. Please try again later.",
@@ -85,6 +104,9 @@ function displayErrorMessage(container, errorType) {
     container.appendChild(m);
 }
 
+/**
+ * Display categories from API
+ */
 function loadOptions() {
     const request = new XMLHttpRequest();
     request.open("GET", "https://www.ifixit.com/api/2.0/categories", true);
@@ -104,6 +126,10 @@ function loadOptions() {
     request.send();
 }
 
+/**
+ * Display child categories from parent category
+ * @param {Object} options 
+ */
 function addOptions(options) {
     const optionList = document.createElement("ul");
     optionList.className = "option-list";
@@ -143,6 +169,10 @@ function addOptions(options) {
     }
 }
 
+/**
+ * Add device to bag and save
+ * @param {string} device 
+ */
 function addDeviceToBag(device) {
     const found = deviceList.some(d => d === device);
     if (found) {
@@ -162,6 +192,10 @@ function addDeviceToBag(device) {
     saveDeviceList();
 }
 
+/**
+ * Remove device from bag and save
+ * @param {string} device 
+ */
 function removeDeviceFromBag(device) {
     const found = deviceList.some(d => d === device);
     if (!found) {
